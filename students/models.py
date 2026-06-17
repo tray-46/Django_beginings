@@ -14,7 +14,7 @@ class Profile(models.Model):
     ]
 
     name = models.CharField(max_length=100, unique=True)
-    email = models.EmailField(unique=True)
+    email = models.EmailField(unique=True, null=True, blank=True)
     image = models.ImageField(upload_to="profiles/images/", null=True, blank=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="draft")
 
