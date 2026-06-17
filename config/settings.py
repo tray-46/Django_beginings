@@ -9,8 +9,12 @@ https://docs.djangoproject.com/en/6.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
-
+import os
+from typing import Any
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
 
 from django.conf.global_settings import MEDIA_URL
 
@@ -22,12 +26,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-61ij(vpcpk=my#t)y-0^46!+3+qypr4#&_a72^vg$ab)jzf2w^"
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don"t run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG", True)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "*"
+]
 
 
 # Application definition
@@ -77,10 +83,22 @@ WSGI_APPLICATION = "config.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+db_config: dict[str, str | Any] = {
+    "host": os.getenv("PG_HOST"),
+    "port": os.getenv("PG_PORT"),
+    "user": os.getenv("PG_USER"),
+    "password": os.getenv("PG_PWD"),
+    "dbname": os.getenv("PG_DBNAME"),
+}
+
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "HOST": db_config.get("host"),
+        "PORT": db_config.get("port"),
+        "USER": db_config.get("user"),
+        "PASSWORD": db_config.get("password"),
+        "NAME": db_config.get("dbname"),
     }
 }
 
@@ -125,6 +143,7 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
+MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
