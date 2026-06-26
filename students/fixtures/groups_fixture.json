@@ -1,0 +1,23 @@
+[
+{
+  "model": "students.group",
+  "pk": 1,
+  "fields": {
+    "name": "А-123"
+  }
+},
+{
+  "model": "students.group",
+  "pk": 2,
+  "fields": {
+    "name": "А-222"
+  }
+},
+{
+  "model": "students.group",
+  "pk": 3,
+  "fields": {
+    "name": "А-321"
+  }
+}
+]

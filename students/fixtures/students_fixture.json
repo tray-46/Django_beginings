@@ -1,0 +1,89 @@
+[
+{
+  "model": "students.student",
+  "pk": 1,
+  "fields": {
+    "first_name": "Иван",
+    "middle_name": "Иванович",
+    "last_name": "Иванов",
+    "nickname": "van",
+    "age": 18,
+    "year": "second",
+    "photo": "",
+    "description": "",
+    "group": 1,
+    "profile": null,
+    "is_active": true,
+    "created_at": "2026-06-18T08:13:12.199Z",
+    "updated_at": "2026-06-18T08:45:38.174Z",
+    "tags": [
+      3,
+      1
+    ]
+  }
+},
+{
+  "model": "students.student",
+  "pk": 2,
+  "fields": {
+    "first_name": "Пётр",
+    "middle_name": "Петровоч",
+    "last_name": "Петров",
+    "nickname": "peter",
+    "age": 19,
+    "year": "second",
+    "photo": "",
+    "description": "",
+    "group": 2,
+    "profile": null,
+    "is_active": true,
+    "created_at": "2026-06-18T08:15:29.572Z",
+    "updated_at": "2026-06-18T08:15:29.572Z",
+    "tags": [
+      2
+    ]
+  }
+},
+{
+  "model": "students.student",
+  "pk": 3,
+  "fields": {
+    "first_name": "Василий",
+    "middle_name": "Васильевич",
+    "last_name": "Васильев",
+    "nickname": "",
+    "age": 20,
+    "year": "third",
+    "photo": "",
+    "description": "",
+    "group": 3,
+    "profile": null,
+    "is_active": true,
+    "created_at": "2026-06-18T08:16:17.392Z",
+    "updated_at": "2026-06-18T08:16:17.392Z",
+    "tags": [
+      2
+    ]
+  }
+},
+{
+  "model": "students.student",
+  "pk": 5,
+  "fields": {
+    "first_name": "Александр",
+    "middle_name": null,
+    "last_name": "Александров",
+    "nickname": "",
+    "age": 21,
+    "year": "first",
+    "photo": "",
+    "description": null,
+    "group": 3,
+    "profile": null,
+    "is_active": true,
+    "created_at": "2026-06-18T09:54:37.300Z",
+    "updated_at": "2026-06-18T10:01:40.867Z",
+    "tags": []
+  }
+}
+]
