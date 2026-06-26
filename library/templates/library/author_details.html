@@ -1,0 +1,11 @@
+{% extends "library/base.html" %}
+
+{% block title %}{{ author }}{% endblock %}
+
+{% block content %}
+        <div class="row">
+            <p>Имя: {{ author.first_name }}</p>
+            <p>Фамилия: {{ author.last_name }}</p>
+            <p>Дата рождения: {{ author.birth_date|date:"d M Y" }}</p>
+        </div>
+{% endblock %}

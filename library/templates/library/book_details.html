@@ -1,15 +1,8 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{book.title|title}}</title>
-    <link href="/static/images/favicon.bmp" type="image/png" rel="icon">
-    <link href="{% static 'css/bootstrap.min.css' %}" type="text/css" rel="stylesheet">
-</head>
-<body>
-    <div class="container mt-5">
+{% extends "library/base.html" %}
+
+{% block title %}{{ book.title }}{% endblock %}
+
+{% block content %}
         <div class="row">
             {% if book.cover_art %}
                 <div class="col-4">
@@ -23,7 +16,4 @@
                     <p>Описание: {{ book.description|default:"Описание отсутствует"|truncatechars:100 }}</p>
             </div>
         </div>
-    </div>
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-</body>
-</html>
+{% endblock %}
