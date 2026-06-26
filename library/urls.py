@@ -7,5 +7,5 @@ app_name = LibraryConfig.name
 
 urlpatterns = [
     path("books_list", views.books_list, name="books_list"),
-    path("books/<int:pk>", views.book, name="books"),
+    path("book/<int:pk>", views.book_details, name="book"),
 ]

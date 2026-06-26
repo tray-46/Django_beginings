@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список книг</title>
+    <link href="/static/images/favicon.bmp" type="image/png" rel="icon">
+    <link href="{% static 'css/bootstrap.min.css' %}" type="text/css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Список книг</h1>
+
+        <ul class="list-group">
+            {% for book in books %}
+                <li class="list-group-item">
+                    <a class="text-decoration-none" href="{% url 'library:book' book.pk %}">{{ book.author }} - {{ book.title }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>
