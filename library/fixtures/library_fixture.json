@@ -1,0 +1,83 @@
+[
+{
+  "model": "library.author",
+  "pk": 1,
+  "fields": {
+    "first_name": "Joanne",
+    "last_name": "Rowling",
+    "birth_date": "1965-07-31"
+  }
+},
+{
+  "model": "library.author",
+  "pk": 2,
+  "fields": {
+    "first_name": "Лев",
+    "last_name": "Толстой",
+    "birth_date": "1829-09-09"
+  }
+},
+{
+  "model": "library.author",
+  "pk": 3,
+  "fields": {
+    "first_name": "Фёдор",
+    "last_name": "Достоевский",
+    "birth_date": "1821-11-11"
+  }
+},
+{
+  "model": "library.book",
+  "pk": 1,
+  "fields": {
+    "title": "Harry Potter and Philosopher's Stone",
+    "publication_data": "1997-06-26",
+    "author": 1
+  }
+},
+{
+  "model": "library.book",
+  "pk": 2,
+  "fields": {
+    "title": "Harry Potter and Chamber of Secrets",
+    "publication_data": "1998-07-02",
+    "author": 1
+  }
+},
+{
+  "model": "library.book",
+  "pk": 3,
+  "fields": {
+    "title": "Harry Potter and Prisoner of Azkaban",
+    "publication_data": "1999-07-08",
+    "author": 1
+  }
+},
+{
+  "model": "library.book",
+  "pk": 5,
+  "fields": {
+    "title": "Анна Коренина",
+    "publication_data": "1877-01-01",
+    "author": 2
+  }
+},
+{
+  "model": "library.book",
+  "pk": 6,
+  "fields": {
+    "title": "Преступление и наказание",
+    "publication_data": "1866-01-01",
+    "author": 3
+  }
+},
+{
+  "model": "library.book",
+  "pk": 7,
+  "fields": {
+    "title": "Война и мир",
+    "publication_data": "1869-01-02",
+    "author": 2
+  }
+}
+]

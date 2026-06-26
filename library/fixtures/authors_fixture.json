@@ -1,0 +1,29 @@
+[
+{
+  "model": "library.author",
+  "pk": 1,
+  "fields": {
+    "first_name": "Joanne",
+    "last_name": "Rowling",
+    "birth_date": "1965-07-31"
+  }
+},
+{
+  "model": "library.author",
+  "pk": 2,
+  "fields": {
+    "first_name": "Лев",
+    "last_name": "Толстой",
+    "birth_date": "1829-09-09"
+  }
+},
+{
+  "model": "library.author",
+  "pk": 3,
+  "fields": {
+    "first_name": "Фёдор",
+    "last_name": "Достоевский",
+    "birth_date": "1821-11-11"
+  }
+}
+]
