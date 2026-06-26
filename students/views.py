@@ -85,8 +85,9 @@ def index(request):
     #     "student_year": student.get_year_display(),
     # }
     context = {"student": student}
-    print(student.photo.path)
-    print(student.photo.url)
+    if student.photo:
+        print(student.photo.path)
+        print(student.photo.url)
     return render(request, "students/index.html", context)
 
 

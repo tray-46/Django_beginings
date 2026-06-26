@@ -13,6 +13,10 @@
     <p>Имя: {{ student.first_name }}</p>
     <p>Фамилия: {{ student.last_name }}</p>
     <p>Курс: {{ student.get_year_display }}</p>
-    <p>Фотография: <img src="{{ student.photo.url }}" alt="{{ student.first_name }} {{ student.last_name }}"></p>
+    {% if student.photo %}
+        <p>Фотография: <img src="{{ student.photo.url }}" alt="{{ student.first_name }} {{ student.last_name }}"></p>
+    {% else %}
+        <p>Фотография отсутствует</p>
+    {% endif %}
 </body>
 </html>
