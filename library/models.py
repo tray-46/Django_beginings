@@ -19,7 +19,9 @@ class Book(models.Model):
 
     title = models.CharField(max_length=200, verbose_name="Название")
     publication_data = models.DateField(verbose_name="Дата публикации")
-    author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name="books")
+    cover_art = models.ImageField(upload_to="books/covers/", null=True, blank=True, verbose_name="Обложка")
+    description = models.TextField(null=True, blank=True, verbose_name="Описание")
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name="books", verbose_name="Автор")
 
     def __str__(self):
         return f"{self.title}"
