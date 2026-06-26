@@ -100,3 +100,7 @@ def student_details(request, pk):
     student = Student.objects.get(pk=pk)
     print(student)
     return render(request, "students/student_details.html", {"student": student})
+
+
+def home(request):
+    return render(request, "students/home.html")
