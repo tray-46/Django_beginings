@@ -10,13 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 import os
-from typing import Any
 from pathlib import Path
 from dotenv import load_dotenv
 
 load_dotenv()
 
-from django.conf.global_settings import MEDIA_URL
+from django.conf.global_settings import MEDIA_URL, DATABASE_ROUTERS
 
 # Build paths inside the project like this: BASE_DIR / "subdir".
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -84,22 +83,32 @@ WSGI_APPLICATION = "config.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-db_config: dict[str, str | Any] = {
-    "host": os.getenv("PG_HOST"),
-    "port": os.getenv("PG_PORT"),
-    "user": os.getenv("PG_USER"),
-    "password": os.getenv("PG_PWD"),
-    "dbname": os.getenv("PG_DBNAME"),
-}
+DATABASE_ROUTERS = ["routers.AppDatabaseRouter"]
 
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "HOST": db_config.get("host"),
-        "PORT": db_config.get("port"),
-        "USER": db_config.get("user"),
-        "PASSWORD": db_config.get("password"),
-        "NAME": db_config.get("dbname"),
+        "HOST": os.getenv("PG_HOST"),
+        "PORT": os.getenv("PG_PORT"),
+        "USER": os.getenv("PG_USER"),
+        "PASSWORD": os.getenv("PG_PWD"),
+        "NAME": os.getenv("PG_DEFAULT_DBNAME"),
+    },
+    "students_db": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "HOST": os.getenv("PG_HOST"),
+        "PORT": os.getenv("PG_PORT"),
+        "USER": os.getenv("PG_USER"),
+        "PASSWORD": os.getenv("PG_PWD"),
+        "NAME": os.getenv("PG_STUDENTS_DBNAME"),
+    },
+    "library_db": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "HOST": os.getenv("PG_HOST"),
+        "PORT": os.getenv("PG_PORT"),
+        "USER": os.getenv("PG_USER"),
+        "PASSWORD": os.getenv("PG_PWD"),
+        "NAME": os.getenv("PG_LIBRARY_DBNAME"),
     }
 }
 
