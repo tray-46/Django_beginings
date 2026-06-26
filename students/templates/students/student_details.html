@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Student info</title>
-    <link type="text/css" href="/static/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-dark text-white">
-<div class="container mt-5">
-    <h1 class="mb-3">Информация о студенте:</h1>
+{% extends "students/base.html" %}
+
+{% block content %}
+    {% include "students/header.html" %}
+    <h2 class="mb-3">Информация о студенте:</h2>
     <p>Имя: {{ student.first_name|upper }}</p>
     <p>Фамилия: {{ student.last_name|lower }}</p>
     <p>Дата рождения: {{ student.birth_date|date:"d M Y"|default:"no date" }}</p>
@@ -20,7 +15,4 @@
             <span>Нет фотографии</span>
         {% endif %}
     </p>
-</div>
-
-</body>
-</html>
+{% endblock %}
