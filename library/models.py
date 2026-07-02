@@ -30,3 +30,13 @@ class Book(models.Model):
         verbose_name = "книга"
         verbose_name_plural = "книги"
         ordering = ["title"]
+
+
+class Article(models.Model):
+
+    title = models.CharField(max_length=250)
+    author = models.CharField(max_length=100)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    is_published = models.BooleanField(default=False)
