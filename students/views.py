@@ -1,6 +1,9 @@
+from django.views.generic.edit import CreateView, UpdateView
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.urls import reverse_lazy
 
+from .forms import StudentForm
 from .models import Student
 
 # Create your views here.
@@ -93,7 +96,7 @@ def index(request):
 
 def students_list(request):
     students = Student.objects.all()
-    return render(request, "students/students_list.html", {"students": students})
+    return render(request, "students/student_list.html", {"students": students})
 
 
 def student_details(request, pk):
@@ -105,3 +108,17 @@ def student_details(request, pk):
 
 def home(request):
     return render(request, "students/home.html")
+
+
+class StudentCreateView(CreateView):
+    model = Student
+    # fields = ["first_name", "middle_name", "last_name", "birth_date", "age", "year", "photo"]
+    form_class = StudentForm
+    success_url = reverse_lazy("students:students_list")
+
+
+class StudentUpdateView(UpdateView):
+    model = Student
+    # fields = ["first_name", "middle_name", "last_name", "birth_date", "age", "year", "photo"
+    form_class = StudentForm
+    success_url = reverse_lazy("students:students_list")

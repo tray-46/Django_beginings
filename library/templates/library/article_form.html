@@ -1,0 +1,14 @@
+{% extends "library/base.html" %}
+
+{% block title %}Форма Article{% endblock %}
+
+{% block content %}
+    <h1>Форма Статьи</h1>
+    <h3 class="text-danger">{{ error_message }}</h3>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+        <a class="btn btn-secondary" href="{% url 'library:article_list' %}">Отмена</a>
+    </form>
+{% endblock %}

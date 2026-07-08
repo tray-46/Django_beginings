@@ -1,0 +1,19 @@
+{% extends "library/base.html" %}
+
+{% block title %}{{ book.title }}{% endblock %}
+
+{% block content %}
+{% include "library/book_header.html" %}
+    <h1>{{ book.title }}</h1>
+    <p>Автор: {{ book.author }} {% if author_more_book_count > 0 %}(у автора ещё {{ author_more_book_count }} книг){% endif %}</p>
+    <p>Опубликована: {{ book.publication_data }}</p>
+    {% if book.cover_art %}
+        <p><img src="{{ book.cover_art.url }}" alt="book cover art"></p>
+    {% endif %}
+    <p>Описание: {{ book.description }}</p>
+    <div>
+        <a class="btn btn-sm btn-secondary ml-3" href="{% url 'library:book_edit' book.pk %}">Изменить</a>
+        <a class="btn btn-sm btn-danger ml-3" href="{% url 'library:book_delete' book.pk %}">Удалить</a>
+        <a class="btn btn-sm btn-primary ml-1" href="{% url 'library:book_list' %}">К списку книг</a>
+    </div>
+{% endblock %}

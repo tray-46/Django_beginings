@@ -1,0 +1,10 @@
+{% extends "library/base.html" %}
+
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block content %}
+    <h1>{{ article.title }}</h1>
+    <h2>{{ additional_data }}</h2>
+    <p class="text-secondary">Автор: {{ article.title }}, Дата публикации: {{ article.created_at|date:"d M Y" }}{% if article.created_at != article.updated_at %}, Отредактирована: {{ article.updated_at|date:"d M Y" }}{% endif %}</p>
+    <p>{{ article.content|linebreaks }}</p>
+{% endblock %}

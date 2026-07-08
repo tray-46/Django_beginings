@@ -1,0 +1,20 @@
+{% extends "library/base.html" %}
+
+{% block title %}
+    Форма
+    {% if request.resolve_match.url_name == "book_create" %}добавления
+    {% elif request.resolve_match.url_name == "book_edit" %}изменения
+    {% endif %}
+    книги
+{% endblock %}
+
+{% block content %}
+{% include "library/book_header.html" %}
+<h1>Форма книги</h1>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+    <a class="btn btn-secondary" href="{% url 'library:book_list' %}">Отмена</a>
+</form>
+{% endblock %}

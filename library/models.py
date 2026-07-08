@@ -37,6 +37,18 @@ class Article(models.Model):
     title = models.CharField(max_length=250)
     author = models.CharField(max_length=100)
     content = models.TextField()
+    article_date = models.DateField(null=True, blank=True)
+    created_by = models.CharField(max_length=250, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_published = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.title
+
+
+class Comment(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)

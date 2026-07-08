@@ -30,6 +30,10 @@
                     <a class="nav-link {% if current_url == 'books_list' %}active{% endif %}"
                        href="{% url 'library:books_list' %}">Книги</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if current_url == 'books_list' %}active{% endif %}"
+                       href="{% url 'library:contacts' %}">Контакты</a>
+                </li>
             </ul>
         </div>
         {% endwith %}

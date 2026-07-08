@@ -1,0 +1,33 @@
+{% extends "library/base.html" %}
+
+{% block title %}Форма Contacts{% endblock %}
+
+{% block content %}
+<h1>Форма обратной связи</h1>
+<h3 class="text-danger">{{ error_message }}</h3>
+<form method="POST">
+    {% csrf_token %}
+    <ul class="list-group">
+        {% for field in form %}
+        <li class="list-group-item d-flex lh-sm">
+            <div class="d-flex flex-column gap-2 w-100">
+                <h6 class="my-0">{{ field.label_tag }}</h6>
+                {{ field }}
+
+                {% if field.errors %}
+                <span class="error-text">{{ field.errors }}</span>
+                {% endif %}
+
+                {% if field.help_text %}
+                <div class="text-secondary">{{ field.help_text|safe }}</div>
+            </div>
+            {% endif %}
+        </li>
+        {% endfor %}
+        <li class="list-group-item d-flex lh-sm">
+            <button type="submit" class="btn btn-primary">Отправить</button>
+            <a class="btn btn-secondary" href="{% url 'library:article_list' %}">Отмена</a>
+        </li>
+    </ul>
+</form>
+{% endblock %}

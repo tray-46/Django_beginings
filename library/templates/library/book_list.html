@@ -1,0 +1,18 @@
+{% extends "library/base.html" %}
+
+{% block title %}Список книг{% endblock %}
+
+{% block content %}
+{% include "library/book_header.html" %}
+<h1>Список книг</h1>
+<a class="btn btn-primary mb-3" href="{% url 'library:book_create' %}">Добавить книгу</a>
+<ul class="list-group">
+    {% for book in book_list %}
+    <li class="list-group-item">
+        <a href="{% url 'library:book_detail' book.pk %}">{{ book.title }}</a>
+    </li>
+    {% empty %}
+    <li class="list-gruop-item">Нет статей</li>
+    {% endfor %}
+</ul>
+{% endblock %}

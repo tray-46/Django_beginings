@@ -3,19 +3,22 @@
 {% block title %}Список студентов{% endblock %}
 
 {% block content %}
-    {% include "students/header.html" %}
+{% include "students/header.html" %}
 
+<div>
     <h2 class="mb-4">Список студентов</h2>
-    <ul class="list-group">
-        {% for student in students%}
-        <li class="list-group-item d-flex justify-content-between align-items-center
+    <a class="btn btn-sm btn-secondary ml-3 mb-2" href="{% url 'students:student_create' %}">Добавить</a>
+</div>
+<ul class="list-group">
+    {% for student in students%}
+    <li class="list-group-item d-flex justify-content-between align-items-center
                     {% if student.year == 'first'%}list-group-item-primary
                     {% elif student.year == 'second'%}list-group-item-success
                     {% elif student.year == 'third'%}list-group-item-warning
                     {% elif student.year == 'fourth'%}list-group-item-danger
                     {% endif %}">
-                <a href="{% url 'students:student_details' student.pk %}">{{student.first_name }} {{ student.last_name }}</a>
-                <span class="badge bg-primary text-white rounded-pill">
+        <a href="{% url 'students:student_details' student.pk %}">{{student.first_name }} {{ student.last_name }}</a>
+        <span class="badge bg-primary text-white rounded-pill">
                     {% if student.year == 'first'%}
                         Первый курс
                     {% elif student.year == 'second'%}
@@ -26,7 +29,8 @@
                         Четвёртый курс
                     {% endif %}
                 </span>
-        </li>
-        {% endfor %}
-    </ul>
+        <a class="btn btn-sm btn-secondary ml-3" href="{% url 'students:student_edit' student.pk %}">Редактировать</a>
+    </li>
+    {% endfor %}
+</ul>
 {% endblock %}
