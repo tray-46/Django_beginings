@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 
-from library.forms import ContactForm, CommentForm
+from library.forms import ContactForm, CommentForm, BookForm, AuthorForm
 from library.models import Book, Author, Article
 
 
@@ -109,13 +109,15 @@ class BookDetailView(DetailView):
 
 class BookCreateView(CreateView):
     model = Book
-    fields = ["author", "title", "publication_data", "cover_art", "description",]
+    # fields = ["author", "title", "publication_data", "cover_art", "description",]
+    form_class = BookForm
     success_url = reverse_lazy("library:book_list")
 
 
 class BookUpdateView(UpdateView):
     model = Book
-    fields = ["author", "title", "publication_data", "cover_art", "description",]
+    # fields = ["author", "title", "publication_data", "cover_art", "description",]
+    form_class = BookForm
     success_url = reverse_lazy("library:book_list")
 
 
@@ -142,3 +144,15 @@ class CommentFormView(FormView):
     def form_valid(self, form: CommentForm):
         form.save()
         return super().form_valid(form)
+
+
+class AuthorCreateView(CreateView):
+    model = Author
+    form_class = AuthorForm
+    success_url = reverse_lazy("library:authors_list")
+
+
+class AuthorUpdateView(UpdateView):
+    model = Author
+    form_class = AuthorForm
+    success_url = reverse_lazy("library:authors_list")

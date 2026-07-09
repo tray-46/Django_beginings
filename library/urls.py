@@ -9,7 +9,9 @@ urlpatterns = [
     path("index/", views.index, name="index"),
 
     path("authors_list/", views.authors_list, name="authors_list"),
-    path("author_details/<int:pk>/", views.author_details, name="author"),
+    path("author/<int:pk>/", views.author_details, name="author"),
+    path("author/new/", views.AuthorCreateView.as_view(), name="author_create"),
+    path("author/<int:pk>/edit/", views.AuthorUpdateView.as_view(), name="author_edit"),
 
     path("books_list/", views.books_list, name="books_list"),
     path("book/<int:pk>/", views.book_details, name="book"),

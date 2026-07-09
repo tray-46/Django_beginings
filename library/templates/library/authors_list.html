@@ -4,11 +4,12 @@
 
 {% block content %}
     <h2 class="mb-4">Список авторов</h2>
-    
+    <a class="btn btn-primary mb-3" href="{% url 'library:author_create' %}">Добавить автора</a>
     <ul class="list-group">
         {% for author in authors %}
-            <li class="list-group-item">
+            <li class="list-group-item d-flex justify-content-between">
                 <a class="text-decoration-none" href="{% url 'library:author' author.pk %}">{{ author }}</a>
+                <a class="btn btn-primary mb-3" href="{% url 'library:author_edit' author.pk %}">Изменить</a>
             </li>
         {% endfor %}
     </ul>
