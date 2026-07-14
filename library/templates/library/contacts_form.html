@@ -8,6 +8,7 @@
 <form method="POST">
     {% csrf_token %}
     <ul class="list-group">
+        {{ form.non_field_errors }}
         {% for field in form %}
         <li class="list-group-item d-flex lh-sm">
             <div class="d-flex flex-column gap-2 w-100">
@@ -20,8 +21,8 @@
 
                 {% if field.help_text %}
                 <div class="text-secondary">{{ field.help_text|safe }}</div>
+                {% endif %}
             </div>
-            {% endif %}
         </li>
         {% endfor %}
         <li class="list-group-item d-flex lh-sm">

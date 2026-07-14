@@ -58,6 +58,7 @@ class Student(models.Model):
     first_name = models.CharField(max_length=100, verbose_name="Имя")
     middle_name = models.CharField(max_length=100, null=True, blank=True, verbose_name="Отчество")
     last_name = models.CharField(max_length=150, verbose_name="Фамилия")
+    email = models.EmailField()
     nickname = models.CharField(max_length=100, blank=True)
     birth_date = models.DateField(null=True, blank=True)
     age = models.PositiveSmallIntegerField(help_text="Введите возраст студента", verbose_name="Возраст")
