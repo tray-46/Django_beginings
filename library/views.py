@@ -1,5 +1,6 @@
 from http.client import responses
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -43,7 +44,7 @@ class ArticleListView(ListView):
         return Article.objects.filter(is_published=True).order_by("-created_at")
 
 
-class ArticleCreateView(CreateView):
+class ArticleCreateView(LoginRequiredMixin, CreateView):
     model = Article
     fields = ["title", "author", "article_date", "content"]
     success_url = reverse_lazy("library:article_list")
@@ -80,13 +81,13 @@ class ArticleDetailView(DetailView):
         return obj
 
 
-class ArticleUpdateView(UpdateView):
+class ArticleUpdateView(LoginRequiredMixin, UpdateView):
     model = Article
     fields = ["title", "author", "content"]
     success_url = reverse_lazy("library:article_list")
 
 
-class ArticleDeleteView(DeleteView):
+class ArticleDeleteView(LoginRequiredMixin, DeleteView):
     model = Article
     success_url = reverse_lazy("library:article_list")
 
@@ -107,21 +108,29 @@ class BookDetailView(DetailView):
         return context
 
 
-class BookCreateView(CreateView):
+class BookCreateView(LoginRequiredMixin, CreateView):
     model = Book
     # fields = ["author", "title", "publication_data", "cover_art", "description",]
     form_class = BookForm
     success_url = reverse_lazy("library:book_list")
 
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
 
-class BookUpdateView(UpdateView):
+
+class BookUpdateView(LoginRequiredMixin, UpdateView):
     model = Book
     # fields = ["author", "title", "publication_data", "cover_art", "description",]
     form_class = BookForm
     success_url = reverse_lazy("library:book_list")
 
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
-class BookDeleteView(DeleteView):
+
+class BookDeleteView(LoginRequiredMixin, DeleteView):
     model = Book
     success_url = reverse_lazy("library:book_list")
 
@@ -146,13 +155,13 @@ class CommentFormView(FormView):
         return super().form_valid(form)
 
 
-class AuthorCreateView(CreateView):
+class AuthorCreateView(LoginRequiredMixin, CreateView):
     model = Author
     form_class = AuthorForm
     success_url = reverse_lazy("library:authors_list")
 
 
-class AuthorUpdateView(UpdateView):
+class AuthorUpdateView(LoginRequiredMixin, UpdateView):
     model = Author
     form_class = AuthorForm
     success_url = reverse_lazy("library:authors_list")
