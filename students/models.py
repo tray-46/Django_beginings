@@ -55,6 +55,18 @@ class Student(models.Model):
         (FOURTH_YEAR, "Четвёртый курс"),
     ]
 
+    @staticmethod
+    def next_year(year):
+        choices = [choice[0] for choice in Student.YEAR_IN_SCHOOL_CHOICES]
+        if year in choices:
+            current_index = choices.index(year)
+            next_index = (current_index + 1)
+            if next_index < len(choices):
+                return choices[next_index]
+            else:
+                return year
+        return choices[0]
+
     first_name = models.CharField(max_length=100, verbose_name="Имя")
     middle_name = models.CharField(max_length=100, null=True, blank=True, verbose_name="Отчество")
     last_name = models.CharField(max_length=150, verbose_name="Фамилия")
@@ -79,3 +91,4 @@ class Student(models.Model):
         verbose_name = "студент"
         verbose_name_plural = "студенты"
         ordering = ["last_name", "first_name"]
+        permissions = [("can_promote_student", "Can promote student"), ("can_expel_student", "Can expel student")]

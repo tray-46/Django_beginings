@@ -10,7 +10,7 @@
     <a class="btn btn-sm btn-secondary ml-3 mb-2" href="{% url 'students:student_create' %}">Добавить</a>
 </div>
 <ul class="list-group">
-    {% for student in students%}
+    {% for student in students %}
     <li class="list-group-item d-flex justify-content-between align-items-center
                     {% if student.year == 'first'%}list-group-item-primary
                     {% elif student.year == 'second'%}list-group-item-success

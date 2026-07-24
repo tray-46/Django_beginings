@@ -1,18 +1,31 @@
 {% extends "students/base.html" %}
 
 {% block content %}
-    {% include "students/header.html" %}
-    <h2 class="mb-3">Информация о студенте:</h2>
-    <p>Имя: {{ student.first_name|upper }}</p>
-    <p>Фамилия: {{ student.last_name|lower }}</p>
-    <p>Дата рождения: {{ student.birth_date|date:"d M Y"|default:"no date" }}</p>
-    <p>Курс: {{ student.get_year_display }}</p>
-    <p>Описание: {{ student.description|truncatechars:100 }}</p>
-    <p>Фотография:
-        {% if student.photo %}
-            <img class="img-thumbnail w-25 ms-3" src="{{ student.photo.url }}" alt="{{ student.first_name }} {{ student.last_name }}">
-        {% else %}
-            <span>Нет фотографии</span>
-        {% endif %}
-    </p>
+{% include "students/header.html" %}
+<h2 class="mb-3">Информация о студенте:</h2>
+<p>Имя: {{ student.first_name|upper }}</p>
+<p>Фамилия: {{ student.last_name|lower }}</p>
+<p>Дата рождения: {{ student.birth_date|date:"d M Y"|default:"no date" }}</p>
+<p>Курс: {{ student.get_year_display }}</p>
+<p>Описание: {{ student.description|truncatechars:100 }}</p>
+<p>Фотография:
+    {% if student.photo %}
+    <img class="img-thumbnail w-25 ms-3" src="{{ student.photo.url }}"
+         alt="{{ student.first_name }} {{ student.last_name }}">
+    {% else %}
+    <span>Нет фотографии</span>
+    {% endif %}
+</p>
+{% if perms.students.can_promote_student %}
+<form method="POST" action="{% url 'students:student_promote' student.pk %}">
+    {% csrf_token %}
+    <button type="submit">Перевести на следующий курс</button>
+</form>
+{% endif %}
+{% if perms.students.can_expel_student %}
+<form method="POST" action="{% url 'students:student_expel' student.pk %}">
+    {% csrf_token %}
+    <button type="submit">Исключить</button>
+</form>
+{% endif %}
 {% endblock %}

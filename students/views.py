@@ -1,6 +1,8 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import View, ListView
 from django.views.generic.edit import CreateView, UpdateView
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.http import HttpResponse, HttpResponseForbidden
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 
 from .forms import StudentForm
@@ -109,16 +111,49 @@ def student_details(request, pk):
 def home(request):
     return render(request, "students/home.html")
 
+class StudentListView(LoginRequiredMixin, ListView):
+    model = Student
+    context_object_name = "students"
+
+    def get_queryset(self):
+        if not self.request.user.has_perm("students.view_student"):
+            return Student.objects.none()
+        return Student.objects.all()
 
 class StudentCreateView(CreateView):
     model = Student
     # fields = ["first_name", "middle_name", "last_name", "birth_date", "age", "year", "photo"]
     form_class = StudentForm
-    success_url = reverse_lazy("students:students_list")
+    success_url = reverse_lazy("students:student_list")
 
 
 class StudentUpdateView(UpdateView):
     model = Student
     # fields = ["first_name", "middle_name", "last_name", "birth_date", "age", "year", "photo"
     form_class = StudentForm
-    success_url = reverse_lazy("students:students_list")
+    success_url = reverse_lazy("students:student_list")
+
+
+class PromoteStudentView(LoginRequiredMixin, View):
+
+    def post(self, request, pk):
+        student = get_object_or_404(Student, pk=pk)
+
+        if not request.user.has_perm("students.can_promote_student"):
+            return HttpResponseForbidden("У вас нет прав для перевода студента.")
+
+        student.year = Student.next_year(student.year)
+        student.save()
+
+        return redirect("students:student_list")
+
+
+class ExpelStudentView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        student = get_object_or_404(Student, pk=pk)
+
+        if not request.user.has_perm("students.can_expel_student"):
+            return HttpResponseForbidden("У вас нет прав для исключения студента.")
+
+        student.delete()
+        return redirect("students:student_list")
