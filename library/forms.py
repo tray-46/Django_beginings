@@ -2,7 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator, MaxLengthValidator, EmailValidator
 
-from library.models import Comment, Author, Book
+from library.models import Comment, Author, Book, BookReview
 
 def validate_even(value):
     if value % 2 != 0:
@@ -81,3 +81,17 @@ class BookForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs.update({"class": "form-control", "placeholder": f"Введите {field.label}"})
+
+
+class BookReviewForm(forms.ModelForm):
+    class Meta:
+        model = BookReview
+        fields = ("title", "rating", "comment",)
+        widgets = {
+            "rating": forms.RadioSelect(),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update({"class": "form-control",})

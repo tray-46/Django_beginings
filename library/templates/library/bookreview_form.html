@@ -1,0 +1,14 @@
+{% extends "library/base.html" %}
+
+{% block title %}Рецензия{% endblock %}
+
+{% block content %}
+{% include "library/book_header.html" %}
+<h1>Рецензия книги</h1>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+    <a class="btn btn-secondary" href="{% url 'library:book_list' %}">Отмена</a>
+</form>
+{% endblock %}

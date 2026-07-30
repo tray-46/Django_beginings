@@ -1,14 +1,14 @@
 from http.client import responses
 
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import Http404
-from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.http import Http404, HttpResponse, HttpResponseForbidden
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView, View
 
-from library.forms import ContactForm, CommentForm, BookForm, AuthorForm
-from library.models import Book, Author, Article
+from library.forms import ContactForm, CommentForm, BookForm, AuthorForm, BookReviewForm
+from library.models import Book, Author, Article, BookReview, BookRecommendation
 
 
 # Create your views here.
@@ -105,13 +105,15 @@ class BookDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["author_more_book_count"] = self.object.author.books.count() - 1
+        context["recommended_by"] = self.object.book_recommendations.all().values_list("reviewer", flat=True)
         return context
 
 
-class BookCreateView(LoginRequiredMixin, CreateView):
+class BookCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Book
     # fields = ["author", "title", "publication_data", "cover_art", "description",]
     form_class = BookForm
+    permission_required = "library.add_book"
     success_url = reverse_lazy("library:book_list")
 
     def form_valid(self, form):
@@ -119,10 +121,11 @@ class BookCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class BookUpdateView(LoginRequiredMixin, UpdateView):
+class BookUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Book
     # fields = ["author", "title", "publication_data", "cover_art", "description",]
     form_class = BookForm
+    permission_required = "library.change_book"
     success_url = reverse_lazy("library:book_list")
 
     def form_valid(self, form):
@@ -130,9 +133,37 @@ class BookUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
 
-class BookDeleteView(LoginRequiredMixin, DeleteView):
+class BookDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Book
+    permission_required = "library.delete_book"
     success_url = reverse_lazy("library:book_list")
+
+
+class BookReviewCreateView(LoginRequiredMixin, CreateView):
+    model = BookReview
+    form_class = BookReviewForm
+    success_url = reverse_lazy("library:book_list")
+
+    def form_valid(self, form):
+        if not self.request.user.has_perm("library.can_review_book"):
+            return HttpResponseForbidden("У Вас нет прав для рецензирования книги.")
+
+        book = get_object_or_404(Book, pk=self.kwargs["book_pk"])
+        review = form.save(commit=False)
+        review.book = book
+        review.author = self.request.user
+        return super().form_valid(form)
+
+
+class BookRecommendationView(LoginRequiredMixin, View):
+
+    def post(self, request, book_pk):
+        if not self.request.user.has_perm("library.can_recommend_book"):
+            return HttpResponseForbidden("У Вас нет прав для рекоммендации книги.")
+
+        book = get_object_or_404(Book, pk=book_pk)
+        BookRecommendation.objects.create(book=book, reviewer=request.user)
+        return redirect("library:book_list")
 
 
 class ContactsFormView(FormView):
@@ -155,13 +186,13 @@ class CommentFormView(FormView):
         return super().form_valid(form)
 
 
-class AuthorCreateView(LoginRequiredMixin, CreateView):
+class AuthorCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Author
     form_class = AuthorForm
     success_url = reverse_lazy("library:authors_list")
 
 
-class AuthorUpdateView(LoginRequiredMixin, UpdateView):
+class AuthorUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Author
     form_class = AuthorForm
     success_url = reverse_lazy("library:authors_list")

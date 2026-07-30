@@ -4,16 +4,33 @@
 
 {% block content %}
 {% include "library/book_header.html" %}
-    <h1>{{ book.title }}</h1>
-    <p>Автор: {{ book.author }} {% if author_more_book_count > 0 %}(у автора ещё {{ author_more_book_count }} книг){% endif %}</p>
-    <p>Опубликована: {{ book.publication_data }}</p>
-    {% if book.cover_art %}
-        <p><img src="{{ book.cover_art.url }}" alt="book cover art"></p>
+<h1>{{ book.title }}</h1>
+<p>Автор: {{ book.author }} {% if author_more_book_count > 0 %}
+    (у автора ещё {{ author_more_book_count }} книг){% endif %}</p>
+<p>Опубликована: {{ book.publication_data }}</p>
+<p>Рецензии: {{ book.book_reviews.all.count }}</p>
+<p>Рекомендуют: {{ recommended_by|join:", " }}</p>
+
+{% if book.cover_art %}
+<p><img src="{{ book.cover_art.url }}" alt="book cover art"></p>
+{% endif %}
+
+<p>Описание: {{ book.description }}</p>
+<div>
+    {% if perms.library.can_review_book %}
+    <a class="btn btn-primary ml-3" href="{% url 'library:add_review' book.pk %}">Рецензировать</a>
     {% endif %}
-    <p>Описание: {{ book.description }}</p>
-    <div>
-        <a class="btn btn-sm btn-secondary ml-3" href="{% url 'library:book_edit' book.pk %}">Изменить</a>
-        <a class="btn btn-sm btn-danger ml-3" href="{% url 'library:book_delete' book.pk %}">Удалить</a>
-        <a class="btn btn-sm btn-primary ml-1" href="{% url 'library:book_list' %}">К списку книг</a>
-    </div>
+
+    {% if perms.library.can_recommend_book %}
+    <form method="POST" action="{% url 'library:add_recommendation' book.pk %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary ml-3">Рекомендовать</button>
+    </form>
+    {% endif %}
+</div>
+<div>
+    <a class="btn btn-sm btn-secondary ml-3" href="{% url 'library:book_edit' book.pk %}">Изменить</a>
+    <a class="btn btn-sm btn-danger ml-3" href="{% url 'library:book_delete' book.pk %}">Удалить</a>
+    <a class="btn btn-sm btn-primary ml-1" href="{% url 'library:book_list' %}">К списку книг</a>
+</div>
 {% endblock %}
