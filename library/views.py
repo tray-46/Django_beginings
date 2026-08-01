@@ -1,5 +1,7 @@
 from http.client import responses
-
+from django.core.cache import cache
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.http import Http404, HttpResponse, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404, redirect
@@ -27,7 +29,10 @@ def index(request):
 
 
 def authors_list(request):
-    authors = Author.objects.order_by("first_name", "last_name")
+    authors = cache.get("authors_list")
+    if not authors:
+        authors = Author.objects.order_by("first_name", "last_name")
+        cache.set("authors_list", authors, 60 * 15)
     return render(request, "library/authors_list.html", {"authors": authors})
 
 
@@ -91,14 +96,18 @@ class ArticleDeleteView(LoginRequiredMixin, DeleteView):
     model = Article
     success_url = reverse_lazy("library:article_list")
 
-
+@method_decorator(cache_page(60 * 15), name="dispatch")
 class BookListView(ListView):
     model = Book
 
     def get_queryset(self):
-        return Book.objects.filter(publication_data__year__gt=1900)
+        queryset = cache.get("book_list")
+        if not queryset:
+            queryset = Book.objects.filter(publication_data__year__gt=1900)
+            cache.set("book_list", queryset)
+        return queryset
 
-
+@method_decorator(cache_page(60 * 15), name="dispatch")
 class BookDetailView(DetailView):
     model = Book
 

@@ -1,4 +1,7 @@
+from django.core.cache import cache
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
 from django.views.generic import View, ListView
 from django.views.generic.edit import CreateView, UpdateView
 from django.http import HttpResponse, HttpResponseForbidden
@@ -111,6 +114,7 @@ def student_details(request, pk):
 def home(request):
     return render(request, "students/home.html")
 
+@method_decorator(cache_page(60 * 15), name="dispatch")
 class StudentListView(LoginRequiredMixin, ListView):
     model = Student
     context_object_name = "students"
@@ -157,3 +161,14 @@ class ExpelStudentView(LoginRequiredMixin, View):
 
         student.delete()
         return redirect("students:student_list")
+
+
+def cached_view_example(request):
+    data = cache.get("some_key")
+
+    if not data:
+        print("redist calc")
+        data = "some expensive computation"
+        cache.set("some_key", data, 60 * 15)
+
+    return HttpResponse(data)

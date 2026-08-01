@@ -25,4 +25,6 @@ urlpatterns = [
     path("student/list/", views.StudentListView.as_view(), name="student_list"),
     path("student/<int:pk>/promote/", views.PromoteStudentView.as_view(), name="student_promote"),
     path("student/<int:pk>/expel/", views.ExpelStudentView.as_view(), name="student_expel"),
+
+    path("student/cache/", views.cached_view_example, name="cached_view"),
 ]
