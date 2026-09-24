@@ -77,6 +77,9 @@ class BookReview(models.Model):
     comment = models.TextField(verbose_name="Комментарий", null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f"Review for {self.book.title}"
+
     class Meta:
         verbose_name = "рецензия"
         verbose_name_plural = "рецензии"

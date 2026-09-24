@@ -11,6 +11,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormVi
 
 from library.forms import ContactForm, CommentForm, BookForm, AuthorForm, BookReviewForm
 from library.models import Book, Author, Article, BookReview, BookRecommendation
+from library.services import BookServices
 
 
 # Create your views here.
@@ -115,6 +116,8 @@ class BookDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context["author_more_book_count"] = self.object.author.books.count() - 1
         context["recommended_by"] = self.object.book_recommendations.all().values_list("reviewer", flat=True)
+        context["average_rating"] = BookServices.calculate_average_rating(self.object.id)
+        context["is_popular"] = BookServices.is_popular(self.object.id)
         return context
 
 

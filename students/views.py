@@ -2,7 +2,7 @@ from django.core.cache import cache
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
-from django.views.generic import View, ListView
+from django.views.generic import View, ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404, redirect
@@ -10,6 +10,8 @@ from django.urls import reverse_lazy
 
 from .forms import StudentForm
 from .models import Student
+from .services import StudentService
+
 
 # Create your views here.
 def example_view(request):
@@ -123,6 +125,21 @@ class StudentListView(LoginRequiredMixin, ListView):
         if not self.request.user.has_perm("students.view_student"):
             return Student.objects.none()
         return Student.objects.all()
+
+
+class StudentDetailView(DetailView):
+    model = Student
+    template_name = "students/student_detail.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        student_id = self.object.id
+
+        context["full_name"] = StudentService.get_full_name(student_id)
+        context["average_grade"] = StudentService.calculate_average_score(student_id)
+        context["has_passed"] = StudentService.has_passed(student_id)
+        return context
+
 
 class StudentCreateView(CreateView):
     model = Student

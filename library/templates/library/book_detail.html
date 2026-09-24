@@ -9,6 +9,8 @@
     (у автора ещё {{ author_more_book_count }} книг){% endif %}</p>
 <p>Опубликована: {{ book.publication_data }}</p>
 <p>Рецензии: {{ book.book_reviews.all.count }}</p>
+<p>Средний рейтинг: {{ average_rating }}</p>
+<p>Популярная книга: {{ is_popular|yesno:"Да,Нет" }}</p>
 <p>Рекомендуют: {{ recommended_by|join:", " }}</p>
 
 {% if book.cover_art %}

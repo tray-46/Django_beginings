@@ -92,3 +92,12 @@ class Student(models.Model):
         verbose_name_plural = "студенты"
         ordering = ["last_name", "first_name"]
         permissions = [("can_promote_student", "Can promote student"), ("can_expel_student", "Can expel student")]
+
+
+class Grade(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="grades")
+    subject = models.CharField(max_length=100)
+    score = models.FloatField()
+
+    def __str__(self):
+        return f"{self.subject}: {self.score}"

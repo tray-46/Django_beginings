@@ -15,7 +15,8 @@ urlpatterns = [
     path("index/", views.index, name="index"),
 
     path("students_list/", views.students_list, name="students_list"),
-    path("student_details/<int:pk>", views.student_details, name="student_details"),
+    path("student_details/<int:pk>/", views.student_details, name="student_details"),
+    path("student_detail/<int:pk>/", views.StudentDetailView.as_view(), name="student_detail"),
 
     path("home", views.home, name="home"),
 

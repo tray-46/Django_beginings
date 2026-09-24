@@ -1,0 +1,8 @@
+{% extends "students/base.html" %}
+
+{% block content %}
+<h2 class="mb-3">{{ full_name }}</h2>
+<p>Средний балл: {{ average_grade }}</p>
+<p>Сдал: {{ has_passed|yesno:"Да,Нет" }}</p>
+<a href="{% url 'students:students_list' %}" class="btn btn-primary">К списку студентов</a>
+{% endblock %}
