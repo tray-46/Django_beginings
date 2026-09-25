@@ -1,0 +1,108 @@
+services:
+  db:
+    image: postgres:16.0
+    container_name: library-db
+    restart: always
+    shm_size: 123mb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - ./.env
+    environment:
+      - POSTGRES_DB=${PG_DBNAME}
+      - POSTGRES_USER=${PG_USER}
+      - POSTGRES_PASSWORD=${PG_PWD}
+    networks:
+      - dbnet
+    expose:
+      - "5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  adminer:
+    image: adminer:6.1.0
+    container_name: library-adminer
+    ports:
+      - "8080:8080"
+    networks:
+      - dbnet
+    depends_on:
+      db:
+        condition: service_healthy
+
+  redis:
+    image: redis:8.10-alpine
+    container_name: library-redis
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    networks:
+      - dbnet
+    expose:
+      - "6379"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  django:
+    build:
+      context: ./
+      dockerfile: ./docker/django/Dockerfile
+      args:
+        - HTTP_PROXY=http://proxy.vsmpo.ru:3128
+        - HTTPS_PROXY=http://proxy.vsmpo.ru:3128
+        - NO_PROXY=localhost,127.0.0.1
+    image: library-django
+    container_name: library-django
+    restart: always
+#    command: "python manage.py runserver 0.0.0.0:8000"
+    command: >
+      sh -c "gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 3"
+    env_file:
+      - .env
+    networks:
+      - dbnet
+    expose:
+      - "8000"
+    volumes:
+      - static:/app/static
+      - media:/app/media
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  nginx:
+    build:
+      context: ./
+      dockerfile: ./docker/nginx/Dockerfile
+    image: library-nginx
+    container_name: library-nginx
+    restart: always
+    networks:
+      - dbnet
+    expose:
+      - 8088
+    ports:
+      - "80:8088"
+    volumes:
+      - static:/app/static
+      - media:/app/media
+    depends_on:
+      - django
+
+networks:
+  dbnet:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
+  static:
+  media:

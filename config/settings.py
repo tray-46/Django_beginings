@@ -29,10 +29,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don"t run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "True") == "True"
 
-ALLOWED_HOSTS = [
-    "*"
-]
-
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1,[::1]").split(",")
 
 # Application definition
 
@@ -92,7 +89,7 @@ DATABASES = {
         "PORT": os.getenv("PG_PORT"),
         "USER": os.getenv("PG_USER"),
         "PASSWORD": os.getenv("PG_PWD"),
-        "NAME": os.getenv("PG_DEFAULT_DBNAME"),
+        "NAME": os.getenv("PG_DBNAME"),
     },
     "students_db": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
@@ -100,7 +97,7 @@ DATABASES = {
         "PORT": os.getenv("PG_PORT"),
         "USER": os.getenv("PG_USER"),
         "PASSWORD": os.getenv("PG_PWD"),
-        "NAME": os.getenv("PG_STUDENTS_DBNAME"),
+        "NAME": os.getenv("PG_DBNAME"),
     },
     "library_db": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
@@ -108,7 +105,7 @@ DATABASES = {
         "PORT": os.getenv("PG_PORT"),
         "USER": os.getenv("PG_USER"),
         "PASSWORD": os.getenv("PG_PWD"),
-        "NAME": os.getenv("PG_LIBRARY_DBNAME"),
+        "NAME": os.getenv("PG_DBNAME"),
     }
 }
 
@@ -116,7 +113,7 @@ DATABASES = {
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
+        "LOCATION": os.getenv("REDIS_URL", "redis://127.0.0.1:6379/1"),
     }
 }
 
@@ -157,9 +154,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
