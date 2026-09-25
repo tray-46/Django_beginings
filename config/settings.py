@@ -80,7 +80,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-DATABASE_ROUTERS = ["routers.AppDatabaseRouter"]
+# DATABASE_ROUTERS = ["routers.AppDatabaseRouter"]
 
 DATABASES = {
     "default": {
@@ -91,22 +91,22 @@ DATABASES = {
         "PASSWORD": os.getenv("PG_PWD"),
         "NAME": os.getenv("PG_DBNAME"),
     },
-    "students_db": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "HOST": os.getenv("PG_HOST"),
-        "PORT": os.getenv("PG_PORT"),
-        "USER": os.getenv("PG_USER"),
-        "PASSWORD": os.getenv("PG_PWD"),
-        "NAME": os.getenv("PG_DBNAME"),
-    },
-    "library_db": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "HOST": os.getenv("PG_HOST"),
-        "PORT": os.getenv("PG_PORT"),
-        "USER": os.getenv("PG_USER"),
-        "PASSWORD": os.getenv("PG_PWD"),
-        "NAME": os.getenv("PG_DBNAME"),
-    }
+    # "students_db": {
+    #     "ENGINE": "django.db.backends.postgresql_psycopg2",
+    #     "HOST": os.getenv("PG_HOST"),
+    #     "PORT": os.getenv("PG_PORT"),
+    #     "USER": os.getenv("PG_USER"),
+    #     "PASSWORD": os.getenv("PG_PWD"),
+    #     "NAME": os.getenv("PG_DBNAME"),
+    # },
+    # "library_db": {
+    #     "ENGINE": "django.db.backends.postgresql_psycopg2",
+    #     "HOST": os.getenv("PG_HOST"),
+    #     "PORT": os.getenv("PG_PORT"),
+    #     "USER": os.getenv("PG_USER"),
+    #     "PASSWORD": os.getenv("PG_PWD"),
+    #     "NAME": os.getenv("PG_DBNAME"),
+    # }
 }
 
 # cache - redis
